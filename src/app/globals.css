@@ -1,10 +1,90 @@
+/* =========================================================
+   BLOAT — Global Design System
+   Based on design files: form.html / results.html / emailModal.html
+   Theme: Dark Material Design, Orange-Coral primary
+   ========================================================= */
+
 @import "tailwindcss";
 
-:root {
-  --font-inter: "Inter", sans-serif;
+/* ── Custom design tokens ────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-background:                #141210;
+  --color-surface:                   #141210;
+  --color-surface-dim:               #141210;
+  --color-surface-bright:            #3a3836;
+  --color-surface-container-lowest:  #0f0d0c;
+  --color-surface-container-low:     #1e1c1a;
+  --color-surface-container:         #22201d;
+  --color-surface-container-high:    #2c2a27;
+  --color-surface-container-highest: #373431;
+  --color-surface-variant:           #373431;
+
+  --color-primary:                   #ffb5a0;
+  --color-primary-container:         #f04f23;
+  --color-primary-fixed:             #ffdbd1;
+  --color-primary-fixed-dim:         #ffb5a0;
+  --color-on-primary:                #5f1500;
+  --color-on-primary-container:      #ffffff;
+  --color-on-primary-fixed:          #3b0900;
+  --color-on-primary-fixed-variant:  #862200;
+  --color-inverse-primary:           #b02f00;
+
+  --color-secondary:                 #c6c6c7;
+  --color-secondary-container:       #454747;
+  --color-secondary-fixed:           #e2e2e2;
+  --color-secondary-fixed-dim:       #c6c6c7;
+  --color-on-secondary:              #2f3131;
+  --color-on-secondary-container:    #b4b5b5;
+  --color-on-secondary-fixed:        #1a1c1c;
+  --color-on-secondary-fixed-variant:#454747;
+
+  --color-tertiary:                  #c9c6c5;
+  --color-tertiary-container:        #929090;
+  --color-tertiary-fixed:            #e5e2e1;
+  --color-tertiary-fixed-dim:        #c9c6c5;
+  --color-on-tertiary:               #313030;
+  --color-on-tertiary-container:     #2a2a29;
+  --color-on-tertiary-fixed:         #1c1b1b;
+  --color-on-tertiary-fixed-variant: #474646;
+
+  --color-error:                     #ffb4ab;
+  --color-error-container:           #93000a;
+  --color-on-error:                  #690005;
+  --color-on-error-container:        #ffdad6;
+
+  --color-outline:                   #ab8980;
+  --color-outline-variant:           #5b4039;
+
+  --color-on-surface:                #e5e2e1;
+  --color-on-surface-variant:        #e4beb4;
+  --color-on-background:             #e5e2e1;
+
+  --color-inverse-surface:           #e5e2e1;
+  --color-inverse-on-surface:        #313030;
+  --color-surface-tint:              #ffb5a0;
+
+  /* Typography */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-plus-jakarta), system-ui, sans-serif;
+
+  /* Spacing */
+  --spacing-xs:  4px;
+  --spacing-sm:  8px;
+  --spacing-md:  16px;
+  --spacing-lg:  24px;
+  --spacing-xl:  48px;
+  --spacing-gutter: 24px;
+
+  /* Border radius */
+  --radius-DEFAULT: 6px;
+  --radius-lg:      8px;
+  --radius-xl:      12px;
+  --radius-full:    9999px;
 }
 
-* {
+/* ── Base styles ─────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -13,28 +93,16 @@ html {
 }
 
 body {
-  font-family: var(--font-inter, "Inter", system-ui, sans-serif);
-  background-color: #030712;
-  color: #f9fafb;
+  background-color: #141210;
+  color: #e5e2e1;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
-}
-
-/* Remove number input arrows */
+/* ── Number input: remove arrows ───────────────────────── */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -44,8 +112,65 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* Select styling */
+/* ── Select styling ─────────────────────────────────────── */
 select option {
-  background-color: #111827;
-  color: #f9fafb;
+  background-color: #1e1c1a;
+  color: #e5e2e1;
+}
+
+/* ── Custom scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #353535; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #ab8980; }
+
+/* ── Utility classes matching design tokens ─────────────── */
+.text-metric-xl {
+  font-family: var(--font-heading);
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+.text-metric-lg {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.text-h1 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.text-h2 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.text-body-base {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+.text-label-caps {
+  font-size: 11px;
+  line-height: 12px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,11 +8,17 @@ const inter = Inter({
   display: "swap",
 });
 
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Bloat — Find Your AI Tool Overspend",
   description:
     "Free AI spend audit for startups and engineering teams. Find out where you're overpaying on Cursor, GitHub Copilot, Claude, ChatGPT and more — in 60 seconds.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://bloat.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://bloat.credex.rocks"),
   openGraph: {
     title: "Bloat — Free AI Spend Audit",
     description: "Are you overpaying for AI tools? Find out in 60 seconds.",
@@ -28,12 +34,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="bg-gray-950 text-white antialiased min-h-screen">
+    <html lang="en" className={`${inter.variable} ${plusJakarta.variable}`}>
+      <body className="antialiased">
         {children}
       </body>
     </html>

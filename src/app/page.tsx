@@ -1,103 +1,61 @@
+import Link from "next/link";
 import { SpendForm } from "@/components/SpendForm";
-import { Zap } from "lucide-react";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gray-950">
-      {/* Subtle background gradient */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-violet-900/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-900/10 rounded-full blur-[100px]" />
-      </div>
-
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-16">
-        {/* Nav */}
-        <nav className="flex items-center justify-between mb-16">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-900/40">
-              <Zap className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-bold text-lg tracking-tight text-white">Bloat</span>
-          </div>
-          <span className="text-xs text-gray-500 bg-white/5 border border-white/10 rounded-full px-3 py-1">
+    <div className="bg-[#141210] text-[#e5e2e1] min-h-screen flex flex-col">
+      {/* Nav */}
+      <nav className="flex justify-between items-center w-full px-[24px] py-[16px] sticky top-0 z-50 bg-[#141210] border-b border-[#5b4039]">
+        <div className="text-h1 font-bold text-[#ffb5a0] tracking-tight">Bloat</div>
+        <div className="flex items-center gap-[16px]">
+          <span className="text-body-sm text-[#e4beb4] hidden sm:block">
             Free · No sign-up required
           </span>
-        </nav>
+        </div>
+      </nav>
 
-        {/* Hero */}
-        <div className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 text-xs text-violet-400 bg-violet-500/10 border border-violet-500/20 rounded-full px-4 py-1.5 mb-6 font-medium">
-            <Zap className="w-3 h-3" />
-            Free AI spend audit · Results in 60 seconds
+      {/* Main */}
+      <main className="flex-grow flex flex-col items-center w-full px-[16px] py-[48px]">
+        <div className="w-full max-w-[640px] flex flex-col gap-[48px]">
+          {/* Step indicator */}
+          <div className="mx-auto inline-flex items-center gap-[8px] px-[16px] py-[8px] rounded-[6px] bg-[#1e1c1a] border border-[#20201f]">
+            <span className="text-label-caps text-[#e5e2e1]">Your tools</span>
+            <span className="text-[#e4beb4] text-xs">→</span>
+            <span className="text-label-caps text-[#e4beb4]">Results</span>
           </div>
 
-          <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.05] mb-4">
-            Your AI bill
-            <br />
-            <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-              has bloat.
-            </span>
-          </h1>
+          {/* Hero copy */}
+          <div className="text-center">
+            <h1 className="text-[40px] font-bold leading-tight tracking-tight text-[#e5e2e1] mb-[8px]">
+              Your AI bill<br />
+              <span className="text-[#ffb5a0]">has bloat.</span>
+            </h1>
+            <p className="text-body-base text-[#e4beb4] max-w-[480px] mx-auto">
+              Most startups overpay for AI tools by 30–60%. Add your tools below and get an instant audit.
+            </p>
+          </div>
 
-          <p className="text-lg text-gray-400 max-w-lg mx-auto leading-relaxed">
-            Most startups overpay for AI tools by 30–60% without knowing it.
-            Find out where your money is going — and what to do about it.
-          </p>
-        </div>
-
-        {/* Social proof strip */}
-        <div className="flex items-center justify-center gap-6 mb-12 flex-wrap">
-          {[
-            "Cursor",
-            "GitHub Copilot",
-            "Claude",
-            "ChatGPT",
-            "Gemini",
-            "+4 more",
-          ].map((tool) => (
-            <span key={tool} className="text-xs text-gray-500 font-medium">
-              {tool}
-            </span>
-          ))}
-        </div>
-
-        {/* Form */}
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/50">
+          {/* Form */}
           <SpendForm />
         </div>
+      </main>
 
-        {/* Trust footer */}
-        <div className="mt-8 text-center">
-          <p className="text-xs text-gray-600">
-            No account required. We never share your data.
-            Email captured only if you choose to save your report.
-          </p>
+      {/* Footer */}
+      <footer className="flex flex-col md:flex-row justify-between items-center w-full px-[24px] py-[48px] gap-[16px] border-t border-[#5b4039] bg-[#141210]">
+        <div className="text-body-sm text-[#c6c6c7]">
+          © 2025 Bloat. Built for{" "}
+          <a href="https://credex.rocks" target="_blank" rel="noopener noreferrer" className="hover:text-[#ffb5a0] transition-colors">
+            Credex
+          </a>
+          .
         </div>
-
-        {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-white/5 text-center">
-          <p className="text-xs text-gray-600">
-            Built for{" "}
-            <a
-              href="https://credex.rocks"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-400 transition-colors"
-            >
-              Credex
-            </a>{" "}
-            ·{" "}
-            <a
-              href="https://github.com/shubham-writes/bloat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-400 transition-colors"
-            >
-              Open source
-            </a>
-          </p>
-        </footer>
-      </div>
-    </main>
+        <div className="flex gap-[24px] text-body-sm text-[#e4beb4]">
+          <Link href="/privacy" className="hover:text-[#ffb5a0] transition-colors">Privacy</Link>
+          <a href="https://github.com/shubham-writes/bloat" target="_blank" rel="noopener noreferrer" className="hover:text-[#ffb5a0] transition-colors">
+            GitHub
+          </a>
+        </div>
+      </footer>
+    </div>
   );
 }

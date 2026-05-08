@@ -154,7 +154,7 @@ export const USE_CASES: { value: UseCase; label: string; description: string }[]
 
 export type TeamSize = "solo" | "2-5" | "6-15" | "16-50" | "50+";
 export const TEAM_SIZES: { value: TeamSize; label: string }[] = [
-  { value: "solo", label: "Solo (just me)" },
+  { value: "solo", label: "Solo" },
   { value: "2-5", label: "2–5 people" },
   { value: "6-15", label: "6–15 people" },
   { value: "16-50", label: "16–50 people" },

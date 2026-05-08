@@ -5,7 +5,6 @@ import { TOOLS, USE_CASES, TEAM_SIZES, UseCase, TeamSize } from "@/lib/tools-dat
 import { FormState, loadFormState, saveFormState, ToolEntry } from "@/lib/form-state";
 import { ToolCard } from "./ToolCard";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function SpendForm() {
@@ -14,33 +13,19 @@ export function SpendForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load from localStorage on mount (client only)
-  useEffect(() => {
-    setForm(loadFormState());
-  }, []);
-
-  // Persist to localStorage on every change
-  useEffect(() => {
-    if (form) saveFormState(form);
-  }, [form]);
+  useEffect(() => { setForm(loadFormState()); }, []);
+  useEffect(() => { if (form) saveFormState(form); }, [form]);
 
   const updateTool = useCallback((entry: ToolEntry) => {
     setForm((prev) => {
       if (!prev) return prev;
       const existing = prev.tools.findIndex((t) => t.toolId === entry.toolId);
-      const tools =
-        existing >= 0
-          ? prev.tools.map((t, i) => (i === existing ? entry : t))
-          : [...prev.tools, entry];
+      const tools = existing >= 0
+        ? prev.tools.map((t, i) => (i === existing ? entry : t))
+        : [...prev.tools, entry];
       return { ...prev, tools };
     });
   }, []);
-
-  const setUseCase = (useCase: UseCase) =>
-    setForm((prev) => prev ? { ...prev, useCase } : prev);
-
-  const setTeamSize = (teamSize: TeamSize) =>
-    setForm((prev) => prev ? { ...prev, teamSize } : prev);
 
   const enabledTools = form?.tools.filter((t) => t.enabled) ?? [];
   const totalSpend = enabledTools.reduce((sum, t) => sum + t.monthlySpend, 0);
@@ -54,24 +39,26 @@ export function SpendForm() {
     }
     setSubmitting(true);
     setError(null);
-
     try {
       const res = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tools: enabledTools,
-          teamSize: form.teamSize,
-          useCase: form.useCase,
-        }),
+        body: JSON.stringify({ tools: enabledTools, teamSize: form.teamSize, useCase: form.useCase }),
       });
-
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Something went wrong. Please try again.");
+        throw new Error(data.error || "Something went wrong.");
       }
-
-      const { auditId } = await res.json();
+      const { auditId, result } = await res.json();
+      // Cache the result so the results page can read it without a DB round-trip
+      // This is especially important for local_ IDs when Supabase isn't configured
+      if (result) {
+        try {
+          sessionStorage.setItem(`audit_${auditId}`, JSON.stringify(result));
+        } catch {
+          // sessionStorage might be unavailable (private browsing, storage full) — not fatal
+        }
+      }
       router.push(`/results/${auditId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -80,27 +67,72 @@ export function SpendForm() {
   }
 
   if (!form) {
-    // Skeleton while hydrating
     return (
-      <div className="space-y-4 animate-pulse">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-24 rounded-2xl bg-white/5" />
+      <div className="space-y-2 animate-pulse">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="h-14 rounded-[8px] bg-[#1e1c1a]" />
         ))}
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      {/* Tool Grid */}
-      <div>
-        <h2 className="text-lg font-semibold text-white mb-1">
-          Your AI Tools
-        </h2>
-        <p className="text-sm text-gray-400 mb-4">
-          Toggle each tool you pay for and fill in your actual spend.
-        </p>
-        <div className="grid gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-[48px]">
+      {/* Global settings */}
+      <section className="flex flex-col gap-[24px] border-b border-[#20201f] pb-[48px]">
+        {/* Team size — now a number input matching form.html */}
+        <div className="flex flex-col gap-[8px]">
+          <label className="text-label-caps text-[#e5e2e1] uppercase" htmlFor="team-size-select">
+            Team Size
+          </label>
+          <div className="flex flex-wrap gap-[8px]">
+            {TEAM_SIZES.map((ts) => (
+              <button
+                key={ts.value}
+                type="button"
+                onClick={() => setForm((p) => p ? { ...p, teamSize: ts.value as TeamSize } : p)}
+                className={cn(
+                  "px-[16px] py-[8px] rounded-full border text-label-caps uppercase transition-colors",
+                  form.teamSize === ts.value
+                    ? "border-[#f04f23] bg-[#f04f23] text-white"
+                    : "border-[#20201f] bg-[#1e1c1a] text-[#e4beb4] hover:bg-[#2c2a27]"
+                )}
+              >
+                {ts.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Use Case — pill buttons matching form.html */}
+        <div className="flex flex-col gap-[8px]">
+          <label className="text-label-caps text-[#e5e2e1] uppercase">
+            Primary Use Case
+          </label>
+          <div className="flex flex-wrap gap-[8px]">
+            {USE_CASES.map((uc) => (
+              <button
+                key={uc.value}
+                type="button"
+                onClick={() => setForm((p) => p ? { ...p, useCase: uc.value as UseCase } : p)}
+                className={cn(
+                  "px-[16px] py-[8px] rounded-full border text-label-caps uppercase transition-colors",
+                  form.useCase === uc.value
+                    ? "border-[#ff5722] bg-[#ff5722] text-white"
+                    : "border-[#20201f] bg-[#1c1b1b] text-[#e4beb4] hover:bg-[#2a2a2a]"
+                )}
+              >
+                {uc.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tool input section */}
+      <section className="flex flex-col gap-[16px]">
+        <h2 className="text-h2 text-[#e5e2e1]">Add a tool</h2>
+        <div className="flex flex-col gap-[8px]">
           {TOOLS.map((tool) => {
             const entry = form.tools.find((t) => t.toolId === tool.id);
             return (
@@ -113,105 +145,30 @@ export function SpendForm() {
             );
           })}
         </div>
-      </div>
+      </section>
 
-      {/* Team Context */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Use Case */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Primary use case
-          </label>
-          <div className="grid grid-cols-1 gap-2">
-            {USE_CASES.map((uc) => (
-              <button
-                key={uc.value}
-                type="button"
-                onClick={() => setUseCase(uc.value)}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-2.5 rounded-xl border text-left transition-all duration-200",
-                  form.useCase === uc.value
-                    ? "border-violet-500 bg-violet-500/10 text-violet-300"
-                    : "border-white/10 bg-white/5 text-gray-400 hover:border-white/20 hover:text-gray-300"
-                )}
-              >
-                <span className="text-sm font-medium">{uc.label}</span>
-                <span className="text-xs text-gray-500 ml-auto hidden sm:block">{uc.description}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* CTA */}
+      <div className="flex flex-col gap-[8px]">
+        {error && <p className="text-body-sm text-[#ffb4ab] text-center">{error}</p>}
 
-        {/* Team Size */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Team size
-          </label>
-          <div className="grid grid-cols-1 gap-2">
-            {TEAM_SIZES.map((ts) => (
-              <button
-                key={ts.value}
-                type="button"
-                onClick={() => setTeamSize(ts.value)}
-                className={cn(
-                  "px-4 py-2.5 rounded-xl border text-left transition-all duration-200",
-                  form.teamSize === ts.value
-                    ? "border-violet-500 bg-violet-500/10 text-violet-300"
-                    : "border-white/10 bg-white/5 text-gray-400 hover:border-white/20 hover:text-gray-300"
-                )}
-              >
-                <span className="text-sm font-medium">{ts.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+        <button
+          type="submit"
+          disabled={submitting || enabledTools.length === 0}
+          className="w-full bg-[#f04f23] text-white rounded-[6px] px-[24px] py-[16px] text-h2 text-center hover:opacity-90 transition-opacity flex items-center justify-center gap-[8px] disabled:opacity-40 disabled:cursor-not-allowed"
+          id="run-audit-btn"
+        >
+          {submitting ? "Running audit…" : "Run my audit"}{" "}
+          {!submitting && <span>→</span>}
+        </button>
 
-      {/* Spend Summary + Submit */}
-      <div className="sticky bottom-4 z-10">
-        <div className="bg-gray-900/90 backdrop-blur-lg border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
-          <div>
-            {enabledTools.length > 0 ? (
-              <>
-                <p className="text-xs text-gray-400">{enabledTools.length} tool{enabledTools.length !== 1 ? "s" : ""} · ${totalSpend.toLocaleString()}/mo</p>
-                <p className="text-sm font-semibold text-white">
-                  Find your savings →
-                </p>
-              </>
-            ) : (
-              <p className="text-sm text-gray-400">Add at least one tool above</p>
-            )}
-          </div>
-
-          {error && (
-            <p className="text-xs text-red-400 flex-1 text-center">{error}</p>
+        <p className="text-center text-body-sm text-[#e4beb4] flex items-center justify-center gap-[4px]">
+          <span>☁</span> Form saves automatically
+          {enabledTools.length > 0 && (
+            <span className="ml-2 text-[#ab8980]">
+              · {enabledTools.length} tool{enabledTools.length !== 1 ? "s" : ""}, ${totalSpend.toLocaleString()}/mo
+            </span>
           )}
-
-          <button
-            type="submit"
-            disabled={submitting || enabledTools.length === 0}
-            className={cn(
-              "flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200",
-              "bg-gradient-to-r from-violet-600 to-purple-600 text-white",
-              "hover:from-violet-500 hover:to-purple-500 hover:scale-105",
-              "disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100",
-              "shadow-lg shadow-violet-900/30"
-            )}
-          >
-            {submitting ? (
-              <>
-                <span className="animate-spin">⋯</span>
-                Auditing…
-              </>
-            ) : (
-              <>
-                <Zap className="w-4 h-4" />
-                Run Audit
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        </div>
+        </p>
       </div>
     </form>
   );
