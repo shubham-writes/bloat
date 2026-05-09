@@ -108,6 +108,8 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
   const [loading, setLoading] = useState(!serverAudit);
   const [showModal, setShowModal] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [summaryText, setSummaryText] = useState<string | null>(null);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
 
   // Try to read from sessionStorage (set by SpendForm after audit creation)
   useEffect(() => {
@@ -127,6 +129,43 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
     // Nothing found — audit was accessed via a shared link with no server-side data
     setLoading(false);
   }, [auditId, audit]);
+
+  // Fetch AI Summary once audit is loaded
+  useEffect(() => {
+    if (!audit || summaryText || isGeneratingSummary) return;
+
+    // If serverAudit has summary_text, use it
+    if (serverAudit && (serverAudit as any).summary_text) {
+      setSummaryText((serverAudit as any).summary_text);
+      return;
+    }
+
+    setIsGeneratingSummary(true);
+    fetch("/api/ai-summary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        auditId,
+        recommendations: audit.recommendations,
+        teamSize: audit.teamSize,
+        useCase: audit.useCase,
+        totalSavings: audit.totalMonthlySavings,
+        isAlreadyOptimal: audit.isAlreadyOptimal,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.summary) {
+          setSummaryText(data.summary);
+        }
+      })
+      .catch((err) => {
+        console.error("Summary fetch error", err);
+      })
+      .finally(() => {
+        setIsGeneratingSummary(false);
+      });
+  }, [audit, auditId, summaryText, isGeneratingSummary, serverAudit]);
 
   async function handleShare() {
     const url = `${window.location.origin}/results/${auditId}`;
@@ -182,22 +221,22 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
           )}
         </section>
 
-        {/* AI Summary — placeholder, wired on Day 3 */}
+        {/* AI Summary */}
         <section
           id="ai-summary"
           className="bg-[#141210] border border-[#5b4039] rounded-[8px] p-[24px] flex flex-col gap-[8px] relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-1 h-full bg-[#f04f23]" />
           <div className="flex items-center gap-[8px] mb-[4px]">
-            <span className="text-[#f04f23] text-sm">✦</span>
+            <span className="text-[#f04f23] text-sm">{isGeneratingSummary ? "⚡" : "✦"}</span>
             <span className="text-label-caps text-[#ffb5a0] uppercase tracking-widest">
-              AI summary
+              {isGeneratingSummary ? "Generating AI summary..." : "AI summary"}
             </span>
           </div>
-          <p className="text-body-base text-[#e4beb4] max-w-3xl leading-relaxed">
-            {audit.isAlreadyOptimal
+          <p className={`text-body-base text-[#e4beb4] max-w-3xl leading-relaxed ${isGeneratingSummary ? 'animate-pulse' : ''}`}>
+            {summaryText || (audit.isAlreadyOptimal
               ? `Your AI tool stack looks well-configured for a ${audit.useCase} team. No major plan mismatches or redundancies detected. Sign up below to be notified when new optimizations apply to your stack.`
-              : `Your ${audit.useCase} team is spending $${audit.totalCurrentSpend.toLocaleString()}/mo on AI tools with $${audit.totalMonthlySavings.toLocaleString()}/mo in identified savings — that's $${audit.totalAnnualSavings.toLocaleString()}/yr annualized. The primary drivers are plan tier mismatches and tool redundancies that don't add capability for your use case.`}
+              : `Your ${audit.useCase} team is spending $${audit.totalCurrentSpend.toLocaleString()}/mo on AI tools with $${audit.totalMonthlySavings.toLocaleString()}/mo in identified savings — that's $${audit.totalAnnualSavings.toLocaleString()}/yr annualized. The primary drivers are plan tier mismatches and tool redundancies that don't add capability for your use case.`)}
           </p>
         </section>
 

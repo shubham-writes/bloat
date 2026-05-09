@@ -53,15 +53,23 @@ Day 3: Wire up Gemini API for the personalized audit summary paragraph, add Rese
 
 ## Day 3 - 2026-05-09
 
-**Hours worked:**
+**Hours worked:** 5
 
 **What I did:**
+- Integrated Llama 3.1 70B (via NVIDIA NIM) to generate the personalized narrative summary.
+- Wired up the Resend SDK in `/api/capture-lead` to fire off a transactional email with the user's custom audit link.
+- Set up Jest and wrote deterministic unit tests for the core audit engine logic.
+- Configured a GitHub Actions workflow (`ci.yml`) to automatically run tests on PRs and pushes to main.
+- Wrote all 9 required business and architecture documentation files (GTM, Metrics, Economics, etc).
 
 **What I learned:**
+Testing the deterministic engine proved exactly why it was necessary: even simple seat math edge cases were tricky to isolate. By mocking out the specific spend scenarios in Jest, I can now safely refactor the UI or add new tools without breaking the core logic that the business relies on. Also, the NVIDIA NIM API was incredibly easy to use as a drop-in replacement for Gemini, and the 70B model handles the narrative perfectly.
 
 **Blockers / what I'm stuck on:**
+Need to deploy the database schema to production and obtain final verified API keys for Resend and Supabase. The user interviews are also pending.
 
 **Plan for tomorrow:**
+Conduct the 3 required user interviews, finalize the production environment variables, and record the walkthrough Loom video.
 
 ---
 
