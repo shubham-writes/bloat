@@ -178,6 +178,10 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
     }
   }
 
+  function handlePrint() {
+    window.print();
+  }
+
   if (loading) return <LoadingState />;
   if (!audit) return <NotFoundState />;
 
@@ -316,6 +320,14 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
             className="w-full sm:w-auto bg-transparent border border-[#ab8980] text-[#e5e2e1] text-h2 px-[48px] py-[16px] rounded-[6px] hover:border-[#e5e2e1] transition-colors flex items-center justify-center gap-[8px]"
           >
             {copied ? "✓ Copied!" : "⎋ Share this audit"}
+          </button>
+          <button
+            onClick={handlePrint}
+            id="download-pdf-btn"
+            aria-label="Download audit as PDF"
+            className="no-print w-full sm:w-auto bg-transparent border border-[#5b4039] text-[#e4beb4] text-h2 px-[48px] py-[16px] rounded-[6px] hover:border-[#ab8980] hover:text-[#e5e2e1] transition-colors flex items-center justify-center gap-[8px]"
+          >
+            <span aria-hidden="true">⇩</span> Download PDF
           </button>
         </section>
       </main>

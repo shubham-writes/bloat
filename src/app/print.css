@@ -1,0 +1,137 @@
+/* =========================================================
+   BLOAT — Print / PDF Stylesheet
+   Applied when user hits "Download PDF" or Ctrl+P
+   ========================================================= */
+
+@media print {
+  /* Reset colors for white paper */
+  :root {
+    --print-bg: #ffffff;
+    --print-text: #111111;
+    --print-muted: #555555;
+    --print-border: #dddddd;
+    --print-accent: #d94418; /* coral darkened for print contrast */
+  }
+
+  /* Hide interactive chrome */
+  header,
+  footer,
+  #save-report-btn,
+  #share-audit-btn,
+  .no-print,
+  [role="dialog"] {
+    display: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 20mm 16mm;
+    size: A4;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 11pt;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Main layout */
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    gap: 20pt !important;
+  }
+
+  /* Headings */
+  h1, h2, h3 {
+    color: #111111 !important;
+    page-break-after: avoid;
+  }
+
+  /* Print header — brand + date */
+  main::before {
+    content: "BLOAT — AI Spend Audit Report";
+    display: block;
+    font-size: 9pt;
+    color: #555555;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 6pt;
+    margin-bottom: 16pt;
+    font-family: system-ui, sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Hero section */
+  section:first-of-type {
+    border-bottom: 1px solid #dddddd !important;
+    padding-bottom: 16pt !important;
+  }
+
+  /* Override dark surface colors */
+  section, div {
+    background-color: transparent !important;
+    border-color: #dddddd !important;
+    color: #111111 !important;
+  }
+
+  /* Metric numbers */
+  .text-metric-xl,
+  .text-metric-lg {
+    color: #d94418 !important;
+  }
+
+  /* Muted labels */
+  .text-label-caps {
+    color: #555555 !important;
+  }
+
+  /* Tool cards grid — single column for print */
+  .grid {
+    display: block !important;
+  }
+
+  .grid > * {
+    display: block !important;
+    margin-bottom: 12pt !important;
+    border: 1px solid #dddddd !important;
+    border-radius: 4pt !important;
+    padding: 12pt !important;
+    break-inside: avoid;
+  }
+
+  /* AI Summary */
+  #ai-summary {
+    border-left: 3pt solid #d94418 !important;
+    padding-left: 12pt !important;
+  }
+
+  /* Credex CTA */
+  a[href*="credex"] {
+    color: #d94418 !important;
+    text-decoration: underline;
+  }
+
+  /* Ensure links print their URLs */
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #777777;
+  }
+
+  /* Don't print internal nav links */
+  header a::after,
+  footer a::after,
+  button::after {
+    content: none !important;
+  }
+
+  /* Page break rules */
+  section {
+    break-inside: avoid;
+  }
+}

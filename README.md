@@ -42,20 +42,39 @@ Bloat is a free, instant audit tool that helps startups and engineering teams id
 
 1. **Deterministic Math over LLMs for the Core Audit:**
    *Trade-off:* We hardcoded 9 specific TypeScript rules instead of passing the user's stack to an LLM for evaluation.
-   *Why:* AI hallucinates math. A lead generation tool for a financial optimization product (Credex) loses all credibility if the math is wrong. The deterministic engine guarantees defensible, accurate numbers.
+   *Why:* AI hallucinates math. A lead generation tool for a financial optimization product (Credex) loses all credibility if the math is wrong. The deterministic engine guarantees defensible, accurate numbers every time.
 
-2. **NVIDIA NIM (Llama 3.1) over OpenAI/Gemini for Summaries:**
-   *Trade-off:* We used Llama 3.1 70B via the NVIDIA NIM API for the narrative summary instead of Gemini or OpenAI.
-   *Why:* It provides an extremely capable open-weights model for absolute zero cost, while supporting the standard OpenAI-compatible REST endpoint shape, minimizing SDK bloat.
+2. **NVIDIA NIM (Llama 3.3 70B) over OpenAI/Gemini for Summaries:**
+   *Trade-off:* We used Llama 3.3 70B via the NVIDIA NIM API for the narrative summary instead of Gemini or OpenAI.
+   *Why:* It provides an extremely capable open-weights model at zero cost, with an OpenAI-compatible REST endpoint, minimizing SDK bloat and vendor lock-in.
 
 3. **`sessionStorage` + Graceful Degradation over Hard DB Dependency:**
-   *Trade-off:* The audit results fall back to `sessionStorage` (with a `local_` ID) if the database isn't configured or fails.
-   *Why:* We want the tool to be instantly usable and demo-able right out of the box without requiring a full Supabase setup, ensuring a smooth developer and user experience.
+   *Trade-off:* Audit results fall back to `sessionStorage` (with a `local_` ID) if Supabase isn't configured.
+   *Why:* The tool is instantly demo-able without requiring a full Supabase setup. This reduces the barrier to contribution and makes local development work out of the box with just `npm install && npm run dev`.
 
-4. **Next.js App Router & Server Actions:**
-   *Trade-off:* We used React Server Components and Next.js API routes instead of a separate Node.js backend.
-   *Why:* The entire app is essentially two views (form and results). A monolithic Next.js architecture reduces deployment complexity and keeps API latency low for the lead capture and AI summary endpoints.
+4. **Next.js App Router (monolith) over Separate Backend:**
+   *Trade-off:* API routes live in the same Next.js project instead of a dedicated Node/Fastify backend.
+   *Why:* The app has two views and five API routes. A monolith reduces deployment complexity, eliminates CORS configuration, and keeps latency low for server-side OG metadata generation.
 
-5. **Tailwind v4 with CSS Variables:**
-   *Trade-off:* We mapped standard Tailwind spacing and sizing tokens to our custom CSS variables in `globals.css` rather than extending a `tailwind.config.js`.
-   *Why:* Tailwind v4 moves strictly toward a CSS-first configuration. This allows us to perfectly replicate the highly-opinionated Bloat design system directly in CSS while still using Tailwind utility classes in the JSX.
+5. **Tailwind v4 CSS-First Configuration:**
+   *Trade-off:* Design tokens are defined in `globals.css` using `@theme {}` instead of `tailwind.config.js`.
+   *Why:* Tailwind v4 moves to a CSS-first configuration model. This keeps the design system co-located with CSS, avoids a separate config file, and lets us use the full design token set as CSS custom properties anywhere in the app.
+
+6. **`window.print()` PDF Export over jsPDF:**
+   *Trade-off:* PDF export uses the native browser print dialog with a custom `@media print` stylesheet instead of a JavaScript PDF library like jsPDF.
+   *Why:* Zero bundle size impact, native quality rendering, offline-capable, and requires no external dependency. The trade-off is we can't pre-name the file or generate it server-side, but for a lead-gen audit tool, "save to PDF from browser" is exactly the right user experience.
+
+## Deploy
+
+```bash
+# Deploy to Vercel (one-time setup)
+npx vercel
+
+# Set these env vars in Vercel dashboard:
+# NVIDIA_NIM_API_KEY
+# RESEND_API_KEY
+# NEXT_PUBLIC_SUPABASE_URL
+# NEXT_PUBLIC_SUPABASE_ANON_KEY
+# SUPABASE_SERVICE_ROLE_KEY
+# NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
+```

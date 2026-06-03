@@ -96,13 +96,25 @@ Deploy to Vercel, wire in production environment variables, and verify the full 
 
 ## Day 5 - 2026-05-11
 
-**Hours worked:**
+**Hours worked:** 3
 
 **What I did:**
+- Implemented the **PDF export bonus feature** using native `window.print()` with a custom `@media print` stylesheet (`src/app/print.css`). No external dependencies. The print CSS transforms the dark UI to a clean white A4 layout, hides interactive chrome (nav, buttons, modal), flattens the tool card grid to single-column, and adds a report header with the brand name. Added a "Download PDF" button to the results page action bar.
+- Created `vercel.json` targeting the Mumbai region (`bom1`) for lowest latency for Indian users.
+- Updated `README.md` with a sixth trade-off entry documenting the `window.print()` PDF decision, expanded the Decisions section rationale, and added a Deploy section with the Vercel one-liner and environment variable reference.
+- Updated all references to Llama model from 3.1 to 3.3 70B Instruct across documentation files.
 
 **What I learned:**
+Using `@media print` with `-webkit-print-color-adjust: exact` and `print-color-adjust: exact` was necessary to force browsers to render background colors in the PDF — by default Chrome strips all backgrounds for printing. Also learned that Tailwind's utility classes (like `flex`, `grid`) don't apply inside `@media print` overrides unless you're specific, so I had to override the grid display manually. Native browser PDF is genuinely high quality and the right default for this use case.
 
 **Blockers / what I'm stuck on:**
+Still need to deploy to Vercel and add the live URL to the README and submission form. Also need to set up Supabase production schema and verify the full email flow on a live domain.
+
+**Plan for tomorrow:**
+Deploy to Vercel, configure all production env vars, set up Supabase prod schema, and verify the live URL end-to-end before submission.
+
+---
+
 
 **Plan for tomorrow:**
 
