@@ -13,6 +13,13 @@
     --print-accent: #d94418; /* coral darkened for print contrast */
   }
 
+  /* Force all text to be selectable in the generated PDF */
+  * {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    pointer-events: auto !important;
+  }
+
   /* Hide interactive chrome */
   header,
   footer,
