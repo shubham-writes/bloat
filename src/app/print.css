@@ -84,6 +84,11 @@
     background-color: transparent !important;
     border-color: #dddddd !important;
     color: #111111 !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
   }
 
   /* Metric numbers */
