@@ -43,14 +43,9 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="flex flex-col md:flex-row justify-between items-center w-full px-[24px] py-[48px] gap-[16px] border-t border-[#5b4039] bg-[#141210]">
         <div className="text-body-sm text-[#c6c6c7]">
-          © 2025 Bloat. Built for{" "}
-          <a href="https://credex.rocks" target="_blank" rel="noopener noreferrer" className="hover:text-[#ffb5a0] transition-colors">
-            Credex
-          </a>
-          .
+          © 2025 Bloat.
         </div>
         <div className="flex gap-[24px] text-body-sm text-[#e4beb4]">
-          <Link href="/privacy" className="hover:text-[#ffb5a0] transition-colors">Privacy</Link>
           <a href="https://github.com/shubham-writes/bloat" target="_blank" rel="noopener noreferrer" className="hover:text-[#ffb5a0] transition-colors">
             GitHub
           </a>
