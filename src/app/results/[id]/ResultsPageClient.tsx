@@ -183,6 +183,13 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
 
   return (
     <div className="bg-[#141210] text-[#e5e2e1] min-h-screen flex flex-col">
+      {/* Skip to content — keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#f04f23] focus:text-white focus:px-4 focus:py-2 focus:rounded focus:text-sm"
+      >
+        Skip to main content
+      </a>
       {/* Nav */}
       <header className="bg-[#141210] border-b border-[#5b4039] flex justify-between items-center w-full px-[24px] py-[16px] sticky top-0 z-50">
         <Link href="/" className="text-h1 font-bold text-[#ffb5a0] tracking-tight">
@@ -196,7 +203,7 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
         </Link>
       </header>
 
-      <main className="flex-grow max-w-[1280px] mx-auto w-full px-[24px] py-[48px] flex flex-col gap-[48px]">
+      <main id="main-content" className="flex-grow max-w-[1280px] mx-auto w-full px-[24px] py-[48px] flex flex-col gap-[48px]">
 
         {/* Hero — Savings */}
         <section className="flex flex-col items-center justify-center text-center py-[48px] border-b border-[#353535]">
@@ -293,17 +300,19 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
         )}
 
         {/* Action Buttons */}
-        <section className="flex flex-col sm:flex-row items-center justify-center gap-[16px] border-t border-[#353535] pt-[48px] mt-[48px]">
+        <section className="flex flex-col sm:flex-row items-center justify-center gap-[16px] border-t border-[#353535] pt-[48px] mt-[48px]" aria-label="Report actions">
           <button
             onClick={() => setShowModal(true)}
             id="save-report-btn"
+            aria-label="Save report — send to email"
             className="w-full sm:w-auto bg-[#f04f23] text-white text-h2 px-[48px] py-[16px] rounded-[6px] hover:opacity-90 transition-opacity flex items-center justify-center gap-[8px]"
           >
-            <span>⬇</span> Save my report
+            <span aria-hidden="true">⬇</span> Save my report
           </button>
           <button
             onClick={handleShare}
             id="share-audit-btn"
+            aria-label={copied ? "Link copied to clipboard" : "Copy shareable link to clipboard"}
             className="w-full sm:w-auto bg-transparent border border-[#ab8980] text-[#e5e2e1] text-h2 px-[48px] py-[16px] rounded-[6px] hover:border-[#e5e2e1] transition-colors flex items-center justify-center gap-[8px]"
           >
             {copied ? "✓ Copied!" : "⎋ Share this audit"}

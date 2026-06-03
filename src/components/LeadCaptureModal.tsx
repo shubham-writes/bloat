@@ -63,9 +63,15 @@ export function LeadCaptureModal({ auditId, savingsTotal, onClose }: Props) {
     <div
       className="fixed inset-0 bg-black/80 z-50 backdrop-blur-sm flex items-center justify-center p-[16px]"
       onClick={(e) => e.target === e.currentTarget && onClose()}
+      role="presentation"
     >
       {/* Modal Card */}
-      <div className="bg-[#141210] border border-[#5b4039] rounded-[8px] w-full max-w-[440px] relative p-[48px] flex flex-col gap-[24px]">
+      <div
+        className="bg-[#141210] border border-[#5b4039] rounded-[8px] w-full max-w-[440px] relative p-[48px] flex flex-col gap-[24px]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
         {/* Close */}
         <button
           onClick={onClose}
@@ -77,11 +83,11 @@ export function LeadCaptureModal({ auditId, savingsTotal, onClose }: Props) {
 
         {done ? (
           /* Success state */
-          <div className="flex flex-col items-center text-center gap-[16px] py-[16px]">
-            <div className="w-12 h-12 rounded-full bg-[#f04f23]/10 border border-[#f04f23]/30 flex items-center justify-center text-2xl">
+          <div className="flex flex-col items-center text-center gap-[16px] py-[16px]" aria-live="polite">
+            <div className="w-12 h-12 rounded-full bg-[#f04f23]/10 border border-[#f04f23]/30 flex items-center justify-center text-2xl" aria-hidden="true">
               ✓
             </div>
-            <h2 className="text-h2 text-[#e5e2e1]">Report sent!</h2>
+            <h2 id="modal-title" className="text-h2 text-[#e5e2e1]">Report sent!</h2>
             <p className="text-body-sm text-[#e4beb4]">
               Check your inbox for the full breakdown.
               {savingsTotal > 500 && " A Credex team member will follow up about your savings opportunity."}
@@ -97,7 +103,7 @@ export function LeadCaptureModal({ auditId, savingsTotal, onClose }: Props) {
           <>
             {/* Header */}
             <div className="flex flex-col gap-[4px] pr-[32px]">
-              <h2 className="text-h2 text-[#e5e2e1] tracking-tight">
+            <h2 id="modal-title" className="text-h2 text-[#e5e2e1] tracking-tight">
                 Save your Bloat report
               </h2>
               <p className="text-body-sm text-[#e4beb4]">
@@ -187,7 +193,7 @@ export function LeadCaptureModal({ auditId, savingsTotal, onClose }: Props) {
               </div>
 
               {error && (
-                <p className="text-body-sm text-[#ffb4ab]">{error}</p>
+                <p className="text-body-sm text-[#ffb4ab]" role="alert">{error}</p>
               )}
 
               {/* Submit */}

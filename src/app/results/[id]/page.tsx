@@ -8,12 +8,69 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const title = "AI Spend Audit Results — Bloat";
+
+  // Try to fetch audit data for rich OG tags
+  let savings = 0;
+  let annual = 0;
+  let useCase = "team";
+  let optimal = false;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const supabaseConfigured =
+    supabaseUrl.length > 0 && supabaseUrl !== "your_supabase_project_url";
+
+  if (supabaseConfigured && !id.startsWith("local_")) {
+    try {
+      const { getServiceClient } = await import("@/lib/supabase");
+      const supabase = getServiceClient();
+      const { data } = await supabase
+        .from("audits")
+        .select("total_monthly_savings, total_annual_savings, use_case, is_already_optimal")
+        .eq("id", id)
+        .single();
+
+      if (data) {
+        savings = data.total_monthly_savings ?? 0;
+        annual = data.total_annual_savings ?? 0;
+        useCase = data.use_case ?? "team";
+        optimal = data.is_already_optimal ?? false;
+      }
+    } catch {
+      // Non-critical — fall back to generic tags
+    }
+  }
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://bloat.credex.rocks";
+  const ogImageUrl = `${appUrl}/api/og?savings=${savings}&annual=${annual}&useCase=${encodeURIComponent(useCase)}&optimal=${optimal}`;
+
+  const title = optimal
+    ? "AI Spend Audit: Stack is lean — Bloat"
+    : savings > 0
+    ? `AI Spend Audit: $${savings.toLocaleString()}/mo in savings found — Bloat`
+    : "AI Spend Audit Results — Bloat";
+
+  const description = optimal
+    ? "This team's AI tool stack is well-optimized. No major redundancies or plan mismatches found."
+    : savings > 0
+    ? `This audit identified $${savings.toLocaleString()}/mo ($${annual.toLocaleString()}/yr) in potential AI tool savings. Run your own free audit.`
+    : "Free AI spend audit. Find out where your team is overpaying on AI tools.";
+
   return {
     title,
-    description: "Free AI spend audit. Find out where your team is overpaying on AI tools.",
-    openGraph: { title, type: "website", siteName: "Bloat" },
-    twitter: { card: "summary_large_image", title },
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      siteName: "Bloat",
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 

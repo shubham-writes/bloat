@@ -21,9 +21,20 @@ export function getAuditEmailHtml(auditId: string, savingsTotal: number, company
           </p>
           
           <div style="margin: 32px 0;">
+            ${auditId.startsWith("local_") ? `
+            <p style="font-size: 14px; color: #ab8980; background-color: #2c2a27; border: 1px solid #353535; border-radius: 6px; padding: 16px; margin: 0;">
+              Your audit was run without a database connection, so it is only stored in your browser. To view it, return to the browser tab where you ran the audit.
+            </p>
+            <div style="margin-top: 16px;">
+              <a href="${process.env.NEXT_PUBLIC_APP_URL}" style="background-color: #f04f23; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block;">
+                Run a New Audit
+              </a>
+            </div>
+            ` : `
             <a href="${auditUrl}" style="background-color: #f04f23; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block;">
               View Full Audit Report
             </a>
+            `}
           </div>
           
           ${savingsTotal > 500 ? `

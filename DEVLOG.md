@@ -75,15 +75,22 @@ Conduct the 3 required user interviews, finalize the production environment vari
 
 ## Day 4 - 2026-05-10
 
-**Hours worked:**
+**Hours worked:** 4
 
 **What I did:**
+- Built a dynamic OG image API route (`/api/og`) using Next.js's built-in `ImageResponse` (edge runtime). Each shared audit URL now generates a custom 1200x630 PNG card showing the exact savings amount and use case in the brand style.
+- Updated `generateMetadata()` in the results page to fetch the audit from Supabase at SSR time and inject the real savings figures into `og:title`, `og:description`, and `og:image`. This means Twitter/Slack/LinkedIn link previews now show actual data instead of a generic placeholder.
+- Fixed the email template bug where clicking "View Full Audit Report" from an email resulted in "Audit not found" when Supabase wasn't configured. Local-only audits now show a friendly message and a "Run a New Audit" button instead.
+- Accessibility improvements: added `role="dialog"` and `aria-modal="true"` to the lead capture modal, `aria-labelledby` pointing to the correct heading, `role="alert"` on form errors, and a skip-to-content link for keyboard users. Also added `aria-label` to icon buttons.
 
 **What I learned:**
+The `ImageResponse` API from `next/og` is genuinely impressive - you write JSX and it renders it to a PNG on the edge with no external dependency. The constraint is that it only supports a subset of CSS (mostly flexbox, no grid) which forced me to be more deliberate about the layout. Also noticed that when `og:image` is a fully dynamic URL with query params, some social crawlers (especially WhatsApp) cache aggressively - important to be aware of for production.
 
 **Blockers / what I'm stuck on:**
+OG image preview only works when the app is deployed (crawlers can't reach localhost). Need to deploy to Vercel to test this fully end-to-end.
 
 **Plan for tomorrow:**
+Deploy to Vercel, wire in production environment variables, and verify the full end-to-end flow (form -> results -> email -> shared URL with OG preview) works on a live URL.
 
 ---
 
