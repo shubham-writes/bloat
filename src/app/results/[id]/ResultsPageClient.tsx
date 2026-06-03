@@ -336,10 +336,9 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
       {/* Footer */}
       <footer className="bg-[#141210] border-t border-[#5b4039] flex flex-col md:flex-row justify-between items-center w-full px-[24px] py-[48px] gap-[16px] mt-auto">
         <div className="text-label-caps text-[#e5e2e1] uppercase tracking-widest">
-          © 2025 Bloat. Built for Credex.
+          © 2025 Bloat.
         </div>
         <div className="flex items-center gap-[24px]">
-          <a href="https://credex.rocks" target="_blank" rel="noopener noreferrer" className="text-body-sm text-[#e4beb4] hover:text-[#ffb5a0] transition-colors">Credex</a>
           <a href="https://github.com/shubham-writes/bloat" target="_blank" rel="noopener noreferrer" className="text-body-sm text-[#e4beb4] hover:text-[#ffb5a0] transition-colors">GitHub</a>
         </div>
       </footer>

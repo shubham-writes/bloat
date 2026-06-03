@@ -116,6 +116,17 @@
     font-weight: 500 !important;
   }
 
+  /* Tool card reasoning text — coral to match design language */
+  .grid > div p {
+    color: #d94418 !important;
+    font-weight: 500 !important;
+  }
+
+  /* /mo unit label on savings figures — coral */
+  .grid > div span[class*="text-body-sm"] {
+    color: #d94418 !important;
+  }
+
   /* Credex CTA */
   a[href*="credex"] {
     color: #d94418 !important;
