@@ -1,16 +1,28 @@
 # Bloat — Find Your AI Tool Overspend
 
-Bloat is a free, instant audit tool that helps startups and engineering teams identify where they are overpaying for AI infrastructure. By analyzing a team's current stack across Cursor, Copilot, Claude, ChatGPT, and APIs, Bloat surfaces plan mismatches, redundant tools, and calculates exact monthly savings. Built for Credex to generate highly qualified leads.
+Bloat is a free, instant AI spend audit tool for startups and engineering teams. Enter your AI tool stack (Cursor, Copilot, Claude, ChatGPT, APIs), and get an immediate breakdown of where you're overpaying — with exact monthly and annual savings figures, per-tool reasoning, and an AI-generated summary. Built as a lead-generation asset for [Credex](https://credex.rocks).
+
+**Who it's for:** Engineering managers, CTOs, and founders who suspect they're double-paying for overlapping AI tools but don't have time to audit it manually.
 
 ## Deployed App
-**Live at:** https://bloat.credex.rocks *(Update this after deployment)*
+**🔗 Live at: https://bloat.credex.rocks**
 
 ## Walkthrough
 
-*Insert screenshots or a link to a Loom video here.*
-- Screenshot 1: The input form
-- Screenshot 2: The savings hero & AI summary
-- Screenshot 3: The per-tool bento grid
+> 📹 **[Add Loom video link here before submission]** — a 60-second screen recording of the full flow is strongly recommended.
+
+**Screenshots:**
+
+| Screen | Description |
+|---|---|
+| Landing + Form | Hero CTA with the spend input form — tool selector, plan picker, seat count |
+| Results Hero | Big savings number + AI-generated personalized summary paragraph |
+| Tool Breakdown | Per-tool bento grid: current spend → recommendation → savings + reasoning |
+| Lead Modal | Email capture modal with honeypot spam protection |
+| PDF Export | Clean white A4 print layout with Bloat branding |
+
+*(Add actual screenshot images here before final submission)*
+
 
 ## Quick Start
 

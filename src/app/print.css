@@ -110,6 +110,12 @@
     padding-left: 12pt !important;
   }
 
+  /* AI summary body text — match the savings metric coral */
+  #ai-summary p {
+    color: #d94418 !important;
+    font-weight: 500 !important;
+  }
+
   /* Credex CTA */
   a[href*="credex"] {
     color: #d94418 !important;

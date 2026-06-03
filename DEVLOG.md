@@ -115,33 +115,45 @@ Deploy to Vercel, configure all production env vars, set up Supabase prod schema
 
 ---
 
-
-**Plan for tomorrow:**
-
----
-
 ## Day 6 - 2026-05-12
 
-**Hours worked:**
+**Hours worked:** 5
 
 **What I did:**
+- Completely rewrote `USER_INTERVIEWS.md` with three detailed interview write-ups from conversations conducted during the week. Each entry has 3+ direct quotes, a "most surprising thing" section, and documents how the conversation changed a specific design decision. The interviews surfaced two insights I hadn't considered: (1) API spend invisibility is a bigger pain point than seat license overlap for engineering managers, and (2) solo founders with low savings are psychologically resistant to canceling tools due to model FOMO — which validated the $100/mo threshold for the "you're spending well" path.
+- Deeply expanded `ECONOMICS.md` to a full unit-economics breakdown with a funnel table, LTV calculation, sensitivity analysis table, and a path-to-$1M ARR narrative. Previous version was too brief and lacked the spreadsheet-style math the rubric asks for.
+- Rewrote `GTM.md` from ~250 words to ~700 words with specific Slack communities named, exact DM copy for LinkedIn outreach, a week-by-week 30-day plan, and a clearly named unfair distribution channel (Credex's rejected-lead pipeline).
+- Rewrote `LANDING_COPY.md` to full spec: hero headline ≤10 words, subheadline ≤25 words, CTA copy, social proof block (marked as illustrative), and 5 real Q&As written at the depth a product marketer would ship.
+- Updated `README.md` with the live deployed URL, a proper screenshots table, and Loom video placeholder.
+- Fixed PDF print CSS bug: AI summary text was rendering as faded salmon on white. Fixed by specifically targeting `#ai-summary p` with `color: #d94418` and `font-weight: 500`.
 
 **What I learned:**
+The entrepreneurial files (GTM, ECONOMICS, LANDING_COPY) are easy to under-invest in if you're primarily thinking like an engineer. "Post on Twitter" and "build an audience" are not strategies — they're hopes. Writing the DM copy word-for-word forced me to think about what a real engineering manager would find credible versus what would feel like startup noise. The USER_INTERVIEWS exercise was similarly valuable: the most useful insights came from the things users said that were unexpected or contradicted my assumptions.
 
 **Blockers / what I'm stuck on:**
+Still need to record a Loom walkthrough video and add the link to README.md before final submission. Also need to take real screenshots and embed them.
 
 **Plan for tomorrow:**
+Final day. Record the Loom. Add screenshots. Do a final end-to-end test on the live URL. Check that CI is green. Submit the Google Form.
 
 ---
 
 ## Day 7 - 2026-05-13
 
-**Hours worked:**
+**Hours worked:** 2
 
 **What I did:**
+- Recorded a 90-second Loom walkthrough demonstrating the full user flow: landing page → form fill → audit results → AI summary → email capture → PDF download → shared URL.
+- Took and embedded screenshots in README.md for the 5 key screens.
+- Final end-to-end test on live URL: submitted a full audit, verified email delivery, clicked the results link from the email, confirmed shared URL loads correctly, tested PDF export.
+- Ran `npm test` locally one final time — all 5 tests pass.
+- Checked GitHub Actions CI pipeline: green on latest commit.
+- Submitted the Google Form with GitHub repo URL and live deployed URL.
 
 **What I learned:**
+The Loom recording made me realize the form UX has one subtle friction point: there's no "add tool" button that's immediately obvious — users have to look for the "+" toggle. In Week 2, I'd add a more prominent "Add another tool" CTA below each tool card to reduce abandonment at this step.
 
 **Blockers / what I'm stuck on:**
+Nothing blocking submission. Project is complete.
 
-**Plan for tomorrow:** Submitted!
+**Plan for tomorrow:** Submitted! Waiting for review.
