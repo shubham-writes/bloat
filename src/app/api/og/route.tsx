@@ -60,19 +60,18 @@ export async function GET(req: NextRequest) {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "12px",
+            gap: "16px",
             marginBottom: "auto",
           }}
         >
           {optimal ? (
-            <>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <div
                 style={{
                   fontSize: 52,
                   fontWeight: 800,
                   color: "#e5e2e1",
                   lineHeight: 1.1,
-                  display: "flex",
                 }}
               >
                 Spending well
@@ -81,22 +80,19 @@ export async function GET(req: NextRequest) {
                 style={{
                   fontSize: 24,
                   color: "#e4beb4",
-                  display: "flex",
                 }}
               >
-                No major optimizations found for this{" "}
-                {useCase} stack.
+                No major optimizations found for this {useCase} stack.
               </div>
-            </>
+            </div>
           ) : (
-            <>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <div
                 style={{
                   fontSize: 22,
                   color: "#ab8980",
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
-                  display: "flex",
                 }}
               >
                 Potential savings identified
@@ -107,7 +103,6 @@ export async function GET(req: NextRequest) {
                   fontWeight: 800,
                   color: "#f04f23",
                   lineHeight: 1,
-                  display: "flex",
                 }}
               >
                 ${savingsNum.toLocaleString()}/mo
@@ -116,13 +111,11 @@ export async function GET(req: NextRequest) {
                 style={{
                   fontSize: 28,
                   color: "#e4beb4",
-                  display: "flex",
                 }}
               >
-                ${annualNum.toLocaleString()}/yr annualized — for a {useCase}{" "}
-                team
+                ${annualNum.toLocaleString()}/yr annualized — for a {useCase} team
               </div>
-            </>
+            </div>
           )}
         </div>
 
