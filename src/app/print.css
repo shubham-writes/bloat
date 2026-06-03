@@ -72,8 +72,8 @@
     padding-bottom: 16pt !important;
   }
 
-  /* Override dark surface colors */
-  section, div {
+  /* Override dark surface colors for all elements */
+  *, section, div, p, span, h1, h2, h3, h4, h5, h6 {
     background-color: transparent !important;
     border-color: #dddddd !important;
     color: #111111 !important;
