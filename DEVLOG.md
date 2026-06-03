@@ -1,6 +1,6 @@
-# DEVLOG - Bloat
+# DEVLOG — Bloat
 
-One entry per day for 7 days. Format per the assignment brief.
+Day-by-day engineering journal tracking the build from zero to production.
 
 ---
 
