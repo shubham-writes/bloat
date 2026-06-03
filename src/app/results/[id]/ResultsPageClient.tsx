@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Share2, FileDown, Inbox } from "lucide-react";
 import { AuditResult, ToolRecommendation, Severity } from "@/lib/audit-engine";
 import { LeadCaptureModal } from "@/components/LeadCaptureModal";
 
@@ -311,7 +312,7 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
             aria-label="Save report — send to email"
             className="w-full sm:w-auto bg-[#f04f23] text-white text-h2 px-[48px] py-[16px] rounded-[6px] hover:opacity-90 transition-opacity flex items-center justify-center gap-[8px]"
           >
-            <span aria-hidden="true">⬇</span> Save my report
+            <Inbox size={20} aria-hidden="true" /> Save my report
           </button>
           <button
             onClick={handleShare}
@@ -319,7 +320,7 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
             aria-label={copied ? "Link copied to clipboard" : "Copy shareable link to clipboard"}
             className="w-full sm:w-auto bg-transparent border border-[#ab8980] text-[#e5e2e1] text-h2 px-[48px] py-[16px] rounded-[6px] hover:border-[#e5e2e1] transition-colors flex items-center justify-center gap-[8px]"
           >
-            {copied ? "✓ Copied!" : "⎋ Share this audit"}
+            <Share2 size={20} aria-hidden="true" /> {copied ? "Copied!" : "Share this audit"}
           </button>
           <button
             onClick={handlePrint}
@@ -327,7 +328,7 @@ export function ResultsPageClient({ auditId, serverAudit }: Props) {
             aria-label="Download audit as PDF"
             className="no-print w-full sm:w-auto bg-transparent border border-[#5b4039] text-[#e4beb4] text-h2 px-[48px] py-[16px] rounded-[6px] hover:border-[#ab8980] hover:text-[#e5e2e1] transition-colors flex items-center justify-center gap-[8px]"
           >
-            <span aria-hidden="true">⇩</span> Download PDF
+            <FileDown size={20} aria-hidden="true" /> Download PDF
           </button>
         </section>
       </main>
